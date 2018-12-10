@@ -12,23 +12,27 @@ import org.apache.maven.shared.invoker.InvocationResult;
  *
  * @author airhacks.com
  */
-public interface WADFlow {
+public class WADFlow {
 
-    public static void wad(Path dir, Path war, Path deploymentDir) throws IOException {
+    private final Builder builder;
+
+    public WADFlow(Path dir, Path war, Path deploymentDir) throws IOException {
+        this.builder = new Builder();
         Runnable changeListener = () -> buildAndDeploy(war, deploymentDir);
         FolderWatchService.listenForChanges(dir, changeListener);
+        System.out.println("WAD watches " + dir);
     }
 
-    static void buildAndDeploy(Path war, Path deploymentDir) {
+    void buildAndDeploy(Path war, Path deploymentDir) {
         try {
-            InvocationResult result = Builder.build();
+            InvocationResult result = this.builder.build();
             if (result.getExitCode() == 0) {
                 Copier.copy(war, deploymentDir);
             } else {
                 System.err.println("maven execution problem: " + result.getExecutionException().getMessage());
             }
         } catch (Exception ex) {
-            System.err.println("maven " + ex.getMessage());
+            System.err.println(ex.getClass().getName() + " " + ex.getMessage());
         }
     }
 

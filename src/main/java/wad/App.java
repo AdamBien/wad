@@ -17,15 +17,15 @@ public class App {
             System.out.println("Invoke with java -jar wad.jar [DEPLOYMENT_DIR]");
             System.exit(-1);
         }
-
-        Path deploymentDir = Paths.get(args[0]);
-        Path sourceCodeDir = Paths.get("./src/main/java");
-
         Path currentPath = Paths.get("").toAbsolutePath();
         Path currentDirectory = currentPath.getFileName();
+        String thinWARName = currentDirectory + ".war";
 
-        Path thinWAR = Paths.get("target", currentDirectory + ".war");
+        Path thinWARPath = Paths.get("target", thinWARName);
 
-        WADFlow.wad(sourceCodeDir, thinWAR, deploymentDir);
+        Path deploymentDir = Paths.get(args[0], thinWARName);
+        Path sourceCodeDir = Paths.get("./src/main/java");
+
+        WADFlow wadFlow = new WADFlow(sourceCodeDir, thinWARPath, deploymentDir);
     }
 }
