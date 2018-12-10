@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption;
 public interface Copier {
 
     public static Path copy(Path from, Path to) throws IOException {
-        System.out.printf("Copying %s to %s", from, to);
+        System.out.printf("Copying %s to %s \n", from, to);
         return Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
     }
 

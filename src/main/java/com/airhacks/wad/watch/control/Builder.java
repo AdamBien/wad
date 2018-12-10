@@ -17,20 +17,18 @@ import org.apache.maven.shared.invoker.MavenInvocationException;
 public class Builder {
 
     private final DefaultInvoker invoker;
-    private final List<String> goals;
-    private final Properties properties;
     private final DefaultInvocationRequest request;
 
     public Builder() {
         this.invoker = new DefaultInvoker();
-        this.goals = Collections.singletonList("package");
-        this.properties = new Properties();
-        this.properties.put("skipTests", true);
+        List<String> goals = Collections.singletonList("package");
+        Properties properties = new Properties();
+        properties.put("maven.test.skip", String.valueOf(true));
         this.request = new DefaultInvocationRequest();
         this.request.setPomFile(new File("./pom.xml"));
-        this.request.setGoals(this.goals);
-        this.request.setBatchMode(false);
-        this.request.setProperties(this.properties);
+        this.request.setGoals(goals);
+        this.request.setBatchMode(true);
+        this.request.setProperties(properties);
     }
 
     public InvocationResult build() throws MavenInvocationException {

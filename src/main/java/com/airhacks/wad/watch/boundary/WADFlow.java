@@ -28,6 +28,7 @@ public class WADFlow {
             InvocationResult result = this.builder.build();
             if (result.getExitCode() == 0) {
                 System.out.println("...built in " + (System.currentTimeMillis() - start) + " ms");
+                start = System.currentTimeMillis();
                 Copier.copy(war, deploymentDir);
                 System.out.println("...copied in " + (System.currentTimeMillis() - start) + " ms");
             } else {
