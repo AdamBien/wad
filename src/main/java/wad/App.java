@@ -25,7 +25,7 @@ public class App {
 
         Path deploymentDir = Paths.get(args[0], thinWARName);
         Path sourceCodeDir = Paths.get("./src/main/java");
-
+        System.out.printf("WAD is watching %s, deploying %s to %s \n", sourceCodeDir, thinWARPath, deploymentDir);
         WADFlow wadFlow = new WADFlow(sourceCodeDir, thinWARPath, deploymentDir);
     }
 }

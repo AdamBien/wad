@@ -10,10 +10,11 @@ import java.nio.file.SimpleFileVisitor;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.List;
 
 /**
  *
@@ -23,7 +24,6 @@ public interface FolderWatchService {
 
 
     public static void listenForChanges(Path dir, Runnable listener) throws IOException {
-        ExecutorService pool = Executors.newCachedThreadPool();
         WatchService service = FileSystems.getDefault().newWatchService();
         Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
             @Override
@@ -35,9 +35,11 @@ public interface FolderWatchService {
         });
         while (true) {
             try {
-                service.take();
-                System.out.println(".");
-                pool.submit(listener);
+                WatchKey key = service.take();
+                List<WatchEvent<?>> events = key.pollEvents();
+                events.forEach(e -> System.out.println(e.kind()));
+                listener.run();
+                key.reset();
             } catch (InterruptedException x) {
                 return;
             }

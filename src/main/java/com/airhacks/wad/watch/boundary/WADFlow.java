@@ -20,14 +20,16 @@ public class WADFlow {
         this.builder = new Builder();
         Runnable changeListener = () -> buildAndDeploy(war, deploymentDir);
         FolderWatchService.listenForChanges(dir, changeListener);
-        System.out.println("WAD watches " + dir);
     }
 
     void buildAndDeploy(Path war, Path deploymentDir) {
+        long start = System.currentTimeMillis();
         try {
             InvocationResult result = this.builder.build();
             if (result.getExitCode() == 0) {
+                System.out.println("...built in " + (System.currentTimeMillis() - start) + " ms");
                 Copier.copy(war, deploymentDir);
+                System.out.println("...copied in " + (System.currentTimeMillis() - start) + " ms");
             } else {
                 System.err.println("maven execution problem: " + result.getExecutionException().getMessage());
             }
