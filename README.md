@@ -1,8 +1,6 @@
-# WAD
+# Watch and Deploy (WAD)
 
-Watch and Deploy
-
-Watches changes in `src\main\java` folder, builds the project using the `pom.xml` and deploys the ThinWAR into the configured folder.
+WAD watches changes in `src\main\java` folder, builds the project using the `pom.xml` and deploys the ThinWAR into the configured folder.
 
 ## usage
 
