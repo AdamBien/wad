@@ -4,7 +4,7 @@ WAD watches changes in `src\main\java` folder, builds the project using the `pom
 
 ## usage
 
-Launch WAD from within your ThinWAR created with [javaee8-essentials-archetype](http://www.adam-bien.com/roller/abien/entry/java_ee_8_essentials_archetype).
+Launch WAD from within your ThinWAR-project created with [javaee8-essentials-archetype](http://www.adam-bien.com/roller/abien/entry/java_ee_8_essentials_archetype).
 
 `[THIN_WAR]/java -jar wad.jar [DEPLOYMENT_DIR]`
 
