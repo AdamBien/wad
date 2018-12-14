@@ -6,6 +6,7 @@ import com.airhacks.wad.watch.control.Copier;
 import com.airhacks.wad.watch.control.FolderWatchService;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.concurrent.atomic.AtomicLong;
 import org.apache.maven.shared.invoker.InvocationResult;
 
 /**
@@ -14,6 +15,7 @@ import org.apache.maven.shared.invoker.InvocationResult;
  */
 public class WADFlow {
 
+    private final static AtomicLong successCounter = new AtomicLong();
     private final Builder builder;
 
     public WADFlow(Path dir, Path war, Path deploymentDir) throws IOException {
@@ -28,6 +30,7 @@ public class WADFlow {
         try {
             InvocationResult result = this.builder.build();
             if (result.getExitCode() == 0) {
+                System.out.printf("[%d] ", successCounter.incrementAndGet());
                 System.out.print("\uD83D\uDC4D");
                 System.out.println(" built in " + (System.currentTimeMillis() - start) + " ms");
                 start = System.currentTimeMillis();
@@ -36,7 +39,7 @@ public class WADFlow {
                 System.out.println(" copied in " + (System.currentTimeMillis() - start) + " ms");
             } else {
                 System.out.print("\uD83D\uDC4E ");
-                System.err.println("maven execution problem: " + result.getExecutionException().getMessage());
+                System.err.println(" : " + result.getExecutionException().getMessage());
             }
         } catch (Exception ex) {
             System.err.println(ex.getClass().getName() + " " + ex.getMessage());
