@@ -19,6 +19,7 @@ public class WADFlow {
     public WADFlow(Path dir, Path war, Path deploymentDir) throws IOException {
         this.builder = new Builder();
         Runnable changeListener = () -> buildAndDeploy(war, deploymentDir);
+        changeListener.run();
         FolderWatchService.listenForChanges(dir, changeListener);
     }
 
