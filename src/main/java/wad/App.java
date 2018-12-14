@@ -14,20 +14,22 @@ import java.nio.file.Paths;
  */
 public class App {
     
-    static void validateDeploymentDirectory(Path path) {
+    static boolean validateDeploymentDirectory(Path path) {
         if (!Files.exists(path)) {
             System.err.printf("Directory %s does not exist", path);
-            System.exit(-1);
+            return false;
         }
         if (!Files.isDirectory(path)) {
             System.err.printf("%s is not a directory", path);
-            System.exit(-1);
+            return false;
         }
+
+        return true;
     }
 
     static String addTrailingSlash(String path) {
-        if (!path.endsWith(File.pathSeparator)) {
-            return path + File.pathSeparator;
+        if (!path.endsWith(File.separator)) {
+            return path + File.separator;
         }
         return path;
     }
@@ -44,7 +46,10 @@ public class App {
         Path thinWARPath = Paths.get("target", thinWARName);
 
         Path deploymentDir = Paths.get(addTrailingSlash(args[0]), thinWARName);
-        validateDeploymentDirectory(deploymentDir);
+        boolean validationWasSuccessful = validateDeploymentDirectory(deploymentDir);
+        if (!validationWasSuccessful) {
+            System.exit(-1);
+        }
         Path sourceCodeDir = Paths.get("./src/main/java");
         System.out.printf("WAD is watching %s, deploying %s to %s \n", sourceCodeDir, thinWARPath, deploymentDir);
         WADFlow wadFlow = new WADFlow(sourceCodeDir, thinWARPath, deploymentDir);
