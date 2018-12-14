@@ -10,11 +10,9 @@ import java.nio.file.SimpleFileVisitor;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
-import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.List;
 
 /**
  *
@@ -36,8 +34,7 @@ public interface FolderWatchService {
         while (true) {
             try {
                 WatchKey key = service.take();
-                List<WatchEvent<?>> events = key.pollEvents();
-                events.forEach(e -> System.out.println(e.kind()));
+                key.pollEvents();
                 listener.run();
                 key.reset();
             } catch (InterruptedException x) {
