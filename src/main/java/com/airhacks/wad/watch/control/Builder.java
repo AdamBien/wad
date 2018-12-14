@@ -2,7 +2,7 @@
 package com.airhacks.wad.watch.control;
 
 import java.io.File;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
@@ -21,7 +21,7 @@ public class Builder {
 
     public Builder() {
         this.invoker = new DefaultInvoker();
-        List<String> goals = Collections.singletonList("package");
+        List<String> goals = Arrays.asList("clean", "package");
         Properties properties = new Properties();
         properties.put("maven.test.skip", String.valueOf(true));
         this.request = new DefaultInvocationRequest();
