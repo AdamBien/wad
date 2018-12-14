@@ -25,10 +25,10 @@ public class AppTest {
     public void addTrailingSlash() {
         String expected = "/";
 
-        String actual = App.addTrailingSlash("");
+        String actual = App.addTrailingSlash("").toString();
         assertThat(actual, is(expected));
 
-        actual = App.addTrailingSlash("/");
+        actual = App.addTrailingSlash("/").toString();
         assertThat(actual, is(expected));
     }
 
