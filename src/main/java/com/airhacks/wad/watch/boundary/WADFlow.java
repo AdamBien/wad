@@ -28,11 +28,14 @@ public class WADFlow {
         try {
             InvocationResult result = this.builder.build();
             if (result.getExitCode() == 0) {
-                System.out.println("...built in " + (System.currentTimeMillis() - start) + " ms");
+                System.out.print("\uD83D\uDC4D");
+                System.out.println(" built in " + (System.currentTimeMillis() - start) + " ms");
                 start = System.currentTimeMillis();
                 Copier.copy(war, deploymentDir);
-                System.out.println("...copied in " + (System.currentTimeMillis() - start) + " ms");
+                System.out.print("\uD83D\uDE80 ");
+                System.out.println(" copied in " + (System.currentTimeMillis() - start) + " ms");
             } else {
+                System.out.print("\uD83D\uDC4E ");
                 System.err.println("maven execution problem: " + result.getExecutionException().getMessage());
             }
         } catch (Exception ex) {

@@ -13,7 +13,8 @@ import java.nio.file.StandardCopyOption;
 public interface Copier {
 
     public static Path copy(Path from, Path to) throws IOException {
-        System.out.printf("Copying %s to %s \n", from, to);
+        long kb = Files.size(from) / 1024;
+        System.out.printf("Copying %s (%d kB ThinWAR) to %s \n", from, kb, to);
         return Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
     }
 
