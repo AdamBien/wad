@@ -46,7 +46,8 @@ public interface FolderWatchService {
 
     static long getFolderModificationId(Path dir) {
         try {
-            return Files.list(dir).
+            return Files.walk(dir).
+                    filter(Files::isRegularFile).
                     mapToLong(FolderWatchService::getFileSize).
                     sum();
         } catch (IOException ex) {
