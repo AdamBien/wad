@@ -43,4 +43,19 @@ public interface FolderWatchService {
         }
     }
 
+    static long listFiles(Path dir) throws IOException {
+        return Files.list(dir).
+                mapToLong(FolderWatchService::getFileTime).
+                sum();
+    }
+
+    static long getFileTime(Path p) {
+        try {
+            return Files.size(p);
+        } catch (IOException ex) {
+            throw new IllegalStateException("Cannot obtain FileTime", ex);
+        }
+    }
+
+
 }
