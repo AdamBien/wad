@@ -24,11 +24,9 @@ public interface FolderWatchService {
 
     static void checkForChanges(ScheduledExecutorService scheduler, long initialTimeStamp, Path dir, Runnable changeListener) {
         long initialStamp = getFolderModificationId(dir);
-        System.out.println("Initial timestamp " + initialStamp);
         boolean changeDetected = false;
         try {
             changeDetected = scheduler.schedule(() -> detectModification(dir, initialStamp), POLLING_INTERVALL, TimeUnit.MILLISECONDS).get();
-            System.out.println("Change detected " + changeDetected);
         } catch (InterruptedException | ExecutionException ex) {
             throw new IllegalStateException("Scheduler error", ex);
         }
