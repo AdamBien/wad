@@ -19,21 +19,24 @@ public interface FolderWatchService {
 
     public static void listenForChanges(Path dir, Runnable listener) throws IOException {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        checkForChanges(scheduler, POLLING_INTERVALL, dir, listener);
+        checkForChanges(scheduler, dir, listener);
     }
 
-    static void checkForChanges(ScheduledExecutorService scheduler, long initialTimeStamp, Path dir, Runnable changeListener) {
+    static void checkForChanges(ScheduledExecutorService scheduler, Path dir, Runnable changeListener) {
         long initialStamp = getFolderModificationId(dir);
         boolean changeDetected = false;
-        try {
-            changeDetected = scheduler.schedule(() -> detectModification(dir, initialStamp), POLLING_INTERVALL, TimeUnit.MILLISECONDS).get();
+        while (true) {
+            try {
+                final long previous = initialStamp;
+                changeDetected = scheduler.schedule(() -> detectModification(dir, previous), POLLING_INTERVALL, TimeUnit.MILLISECONDS).get();
         } catch (InterruptedException | ExecutionException ex) {
             throw new IllegalStateException("Scheduler error", ex);
         }
         if (changeDetected) {
-            changeListener.run();
+                changeListener.run();
+            initialStamp = getFolderModificationId(dir);
+            }
         }
-        checkForChanges(scheduler, getFolderModificationId(dir), dir, changeListener);
 
     }
 

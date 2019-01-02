@@ -12,6 +12,10 @@ e.g.
 
 `[THIN_WAR]/java -jar wad.jar /openliberty/wlp/usr/servers/defaultServer/dropins/`
 
+or multiple servers:
+
+`[THIN_WAR]/java -jar wad.jar /openliberty/wlp/usr/servers/defaultServer/dropins/ wildfly/standalone/deployments payara/glassfish/domains/domain1/autodeploy tomee/webapps`
+
 On each source change WAD will:
 
 1. Use the current directory as the service name
