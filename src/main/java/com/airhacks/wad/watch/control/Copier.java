@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -23,8 +23,8 @@ public interface Copier {
         }
     }
 
-    public static void copy(Path from, Path... to) {
-        Arrays.stream(to).forEach(target -> copySingle(from, target));
+    public static void copy(Path from, List<Path> deploymentTargets) {
+        deploymentTargets.forEach(target -> copySingle(from, target));
     }
 
     static Path copySingle(Path from, Path to) {
