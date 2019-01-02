@@ -22,3 +22,17 @@ You only have to write code and save it frequently like this:
 
 [![ WAD](https://i.ytimg.com/vi/_c8ZkSSpdWI/mqdefault.jpg)](https://www.youtube.com/embed/_c8ZkSSpdWI?rel=0)
 
+## Common deployment directories
+
+[WildFly](http://wildfly.org)
+wildfly-[VERSION].Final/standalone/deployments
+
+[OpenLiberty](https://openliberty.io)
+openliberty-[VERSION]/usr/servers/defaultServer/dropins
+
+[Payara](https://www.payara.fish)
+payara/glassfish/domains/domain1/autodeploy
+
+[TomEE](http://tomee.apache.org)
+tomee-[version]/webapps
+
