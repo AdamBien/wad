@@ -18,5 +18,7 @@ On each source change WAD will:
 2. Build the project using the `pom.xml` found in the directory
 3. Copy the `./target/[name].war` into the path used as parameter
 
-You only have to write code and save it frequently :-).
+You only have to write code and save it frequently like this:
+
+[![ WAD](https://i.ytimg.com/vi/_c8ZkSSpdWI/mqdefault.jpg)](https://www.youtube.com/embed/_c8ZkSSpdWI?rel=0)
 
