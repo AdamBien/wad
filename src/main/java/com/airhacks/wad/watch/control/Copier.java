@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 
 /**
  *
@@ -22,10 +23,20 @@ public interface Copier {
         }
     }
 
-    public static Path copy(Path from, Path to) throws IOException {
-        long kb = Files.size(from) / 1024;
-        System.out.printf("Copying %dkB ThinWAR to %s \n", kb, shortenForDisplay(to, 40));
-        return Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
+    public static void copy(Path from, Path... to) {
+        Arrays.stream(to).forEach(target -> copySingle(from, target));
+    }
+
+    static Path copySingle(Path from, Path to) {
+        long kb;
+        try {
+            kb = Files.size(from) / 1024;
+            System.out.printf("Copying %dkB ThinWAR to %s \n", kb, shortenForDisplay(to, 40));
+            return Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
+
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex.getMessage(), ex);
+        }
     }
 
 }
