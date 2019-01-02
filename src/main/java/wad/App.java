@@ -8,7 +8,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -16,6 +19,11 @@ import java.util.Properties;
  */
 public class App {
     
+    static boolean validateDeploymentDirectories(List<Path> path) {
+        long invalidDirectories = path.stream().map(App::validateDeploymentDirectory).filter(valid -> valid == false).count();
+        return (invalidDirectories == 0);
+    }
+
     static boolean validateDeploymentDirectory(Path path) {
         if (!Files.exists(path)) {
             System.err.printf("Directory %s does not exist", path);
@@ -25,7 +33,6 @@ public class App {
             System.err.printf("%s is not a directory", path);
             return false;
         }
-
         return true;
     }
 
@@ -48,11 +55,22 @@ public class App {
         }
     }
 
+    static List<Path> convert(String[] args) {
+        return Arrays.stream(args).map(App::addTrailingSlash).collect(Collectors.toList());
+    }
+
+    static List<Path> addWarName(List<Path> deploymentDirectories, String warName) {
+        return deploymentDirectories.
+                stream().
+                map(path -> path.resolve(warName)).
+                collect(Collectors.toList());
+    }
+
 
     public static void main(String[] args) throws IOException {
         printWelcomeMessage();
-        if (args.length != 1) {
-            System.out.println("Invoke with java -jar wad.jar [DEPLOYMENT_DIR]");
+        if (args.length < 1) {
+            System.out.println("Invoke with java -jar wad.jar [DEPLOYMENT_DIR1,DEPLOYMENT_DIR1]");
             System.exit(-1);
         }
         Path currentPath = Paths.get("").toAbsolutePath();
@@ -60,14 +78,17 @@ public class App {
         String thinWARName = currentDirectory + ".war";
 
         Path thinWARPath = Paths.get("target", thinWARName);
-        Path deploymentDirArgument = addTrailingSlash(args[0]);
-        boolean validationWasSuccessful = validateDeploymentDirectory(deploymentDirArgument);
+
+        List<Path> deploymentDirs = convert(args);
+        boolean validationWasSuccessful = validateDeploymentDirectories(deploymentDirs);
         if (!validationWasSuccessful) {
             System.exit(-1);
         }
-        Path deploymentDir = deploymentDirArgument.resolve(thinWARName);
+
+        List<Path> deploymentTargets = addWarName(deploymentDirs, thinWARName);
         Path sourceCodeDir = Paths.get("./src/main/");
-        System.out.printf("WAD is watching %s, deploying %s to %s \n", sourceCodeDir, thinWARPath, deploymentDir);
-        WADFlow wadFlow = new WADFlow(sourceCodeDir, thinWARPath, deploymentDir);
+        System.out.printf("WAD is watching %s, deploying %s to %s \n", sourceCodeDir, thinWARPath, deploymentTargets);
+        WADFlow wadFlow = new WADFlow(sourceCodeDir, thinWARPath, deploymentTargets);
     }
+
 }
