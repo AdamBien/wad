@@ -46,6 +46,9 @@ public class WADFlow {
                 this.copier.copy();
                 System.out.print("\uD83D\uDE80 ");
                 System.out.println(" copied in " + (System.currentTimeMillis() - start) + " ms");
+                if (buildTimes.size() % 10 == 0) {
+                    this.printStatistics();
+                }
             } else {
                 System.out.print("\uD83D\uDC4E ");
                 System.err.println(" : " + result.getExecutionException().getMessage());
@@ -60,6 +63,25 @@ public class WADFlow {
                 stream().
                 mapToLong(t -> t).
                 summaryStatistics();
+    }
+
+    String statisticsSummary() {
+        LongSummaryStatistics warSizeStatistics = this.copier.warSizeStatistics();
+        long maxKb = warSizeStatistics.getMax();
+        long minKb = warSizeStatistics.getMin();
+        long totalKb = warSizeStatistics.getSum();
+        String warStats = String.format("WAR sizes: min %d kB, max %d kB, total %d kB\n", minKb, maxKb, totalKb);
+
+        LongSummaryStatistics buildTimeStatistics = this.buildTimeStatistics();
+        long maxTime = buildTimeStatistics.getMax();
+        long minTime = buildTimeStatistics.getMin();
+        long totalTime = buildTimeStatistics.getSum();
+        String buildTimeStats = String.format("Build times: min %d ms, max %d ms, total %d ms", minTime, maxTime, totalTime);
+        return warStats + buildTimeStats;
+    }
+
+    void printStatistics() {
+        System.out.println(statisticsSummary());
     }
 
 }
