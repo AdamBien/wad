@@ -37,7 +37,9 @@ public class WADFlow {
             if (result.getExitCode() == 0) {
                 System.out.printf("[%d] ", successCounter.incrementAndGet());
                 System.out.print("\uD83D\uDC4D");
-                System.out.println(" built in " + (System.currentTimeMillis() - start) + " ms");
+                long buildTime = (System.currentTimeMillis() - start);
+                buildTimes.add(buildTime);
+                System.out.println(" built in " + buildTime + " ms");
                 start = System.currentTimeMillis();
                 this.copier.copy();
                 System.out.print("\uD83D\uDE80 ");
