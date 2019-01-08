@@ -79,9 +79,15 @@ public class WADFlow {
         long maxTime = buildTimeStatistics.getMax();
         long minTime = buildTimeStatistics.getMin();
         long totalTime = buildTimeStatistics.getSum();
-        String buildTimeStats = String.format("Build times: min %d ms, max %d ms, total %d ms", minTime, maxTime, totalTime);
+        String buildTimeStats = String.format("Build times: min %d ms, max %d ms, total %d ms\n", minTime, maxTime, totalTime);
 
-        String failureStats = String.format("%d builds failed", buildErrorCounter.get());
+        String failureStats;
+        long failedBuilds = buildErrorCounter.get();
+        if (failedBuilds == 0) {
+            failureStats = "Great! Every build was a success!";
+        } else {
+            failureStats = String.format("%d builds failed", buildErrorCounter.get());
+        }
         return warStats + buildTimeStats + failureStats;
     }
 
