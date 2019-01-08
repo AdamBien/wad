@@ -26,38 +26,42 @@ public class SilentLogger implements InvokerLogger {
 
     @Override
     public void info(String message) {
+        this.log(message);
     }
 
     @Override
     public void info(String message, Throwable throwable) {
+        this.log(message, throwable);
     }
 
     @Override
     public boolean isInfoEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public void warn(String message) {
+        this.log(message);
     }
 
     @Override
     public void warn(String message, Throwable throwable) {
+        this.log(message, throwable);
     }
 
     @Override
     public boolean isWarnEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public void error(String message) {
-        System.err.println(message);
+        this.log(message);
     }
 
     @Override
     public void error(String message, Throwable throwable) {
-        System.err.println(message + " " + throwable.getMessage());
+        this.log(message, throwable);
     }
 
     @Override
@@ -67,10 +71,12 @@ public class SilentLogger implements InvokerLogger {
 
     @Override
     public void fatalError(String message) {
+        log(message);
     }
 
     @Override
     public void fatalError(String message, Throwable throwable) {
+        log(message, throwable);
     }
 
     @Override
@@ -86,6 +92,14 @@ public class SilentLogger implements InvokerLogger {
     @Override
     public int getThreshold() {
         return this.threshold;
+    }
+
+    void log(String message) {
+        System.err.println(message);
+    }
+
+    void log(String message, Throwable t) {
+        log(message + " " + t);
     }
 
 }

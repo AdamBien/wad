@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.concurrent.atomic.AtomicLong;
 import org.apache.maven.shared.invoker.InvocationResult;
+import org.apache.maven.shared.invoker.MavenInvocationException;
 
 /**
  *
@@ -20,6 +21,8 @@ public class WADFlow {
     private final List<Long> buildTimes;
 
     private final AtomicLong successCounter = new AtomicLong();
+    private final AtomicLong buildErrorCounter = new AtomicLong();
+
     private final Copier copier;
     private final Builder builder;
 
@@ -50,10 +53,10 @@ public class WADFlow {
                     this.printStatistics();
                 }
             } else {
-                System.out.print("\uD83D\uDC4E ");
-                System.err.println(" : " + result.getExecutionException().getMessage());
+                System.out.printf("[%d] ", buildErrorCounter.incrementAndGet());
+                System.out.println("\uD83D\uDC4E ");
             }
-        } catch (Exception ex) {
+        } catch (MavenInvocationException ex) {
             System.err.println(ex.getClass().getName() + " " + ex.getMessage());
         }
     }
@@ -77,7 +80,9 @@ public class WADFlow {
         long minTime = buildTimeStatistics.getMin();
         long totalTime = buildTimeStatistics.getSum();
         String buildTimeStats = String.format("Build times: min %d ms, max %d ms, total %d ms", minTime, maxTime, totalTime);
-        return warStats + buildTimeStats;
+
+        String failureStats = String.format("%d builds failed", buildErrorCounter.get());
+        return warStats + buildTimeStats + failureStats;
     }
 
     void printStatistics() {
