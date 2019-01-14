@@ -4,6 +4,7 @@ package com.airhacks.wad.watch.control;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,6 +18,8 @@ public interface FolderWatchService {
 
     static long POLLING_INTERVALL = 500;
 
+    static String POM = "pom.xml";
+
     public static void listenForChanges(Path dir, Runnable listener) throws IOException {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         checkForChanges(scheduler, dir, listener);
@@ -24,6 +27,7 @@ public interface FolderWatchService {
 
     static void checkForChanges(ScheduledExecutorService scheduler, Path dir, Runnable changeListener) {
         long initialStamp = getFolderModificationId(dir);
+        initialStamp += getPomModificationStamp();
         boolean changeDetected = false;
         while (true) {
             try {
@@ -37,7 +41,10 @@ public interface FolderWatchService {
             initialStamp = getFolderModificationId(dir);
             }
         }
+    }
 
+    static long getPomModificationStamp() {
+        return getFileSize(Paths.get(POM));
     }
 
     static boolean detectModification(Path dir, long previousStamp) {
