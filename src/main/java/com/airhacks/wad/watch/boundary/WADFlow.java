@@ -46,7 +46,8 @@ public class WADFlow {
         try {
             InvocationResult result = this.builder.build();
             if (result.getExitCode() == 0) {
-                System.out.printf("[%d] ", successCounter.incrementAndGet());
+                System.out.printf("[%d]", successCounter.incrementAndGet());
+                System.out.printf("[%s%s%s]", "\033[1;90m", currentFormattedTime(), "\u001B[0m");
                 System.out.print("\uD83D\uDC4D");
                 long buildTime = (System.currentTimeMillis() - start);
                 buildTimes.add(buildTime);
@@ -69,15 +70,13 @@ public class WADFlow {
 
     static String currentFormattedTime() {
         DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
-                .appendLiteral('[')
                 .appendValue(HOUR_OF_DAY, 2)
                 .appendLiteral(':')
                 .appendValue(MINUTE_OF_HOUR, 2)
                 .optionalStart()
                 .appendLiteral(':')
                 .appendValue(SECOND_OF_MINUTE, 2)
-                .appendLiteral(']').
-                toFormatter();
+                .toFormatter();
 
         return LocalTime.now().format(timeFormatter);
     }
