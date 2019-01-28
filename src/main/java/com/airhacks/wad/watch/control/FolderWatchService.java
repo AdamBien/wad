@@ -26,7 +26,7 @@ public interface FolderWatchService {
     }
 
     static void checkForChanges(ScheduledExecutorService scheduler, Path dir, Runnable changeListener) {
-        long initialStamp = getFolderModificationId(dir);
+        long initialStamp = getProjectModificationId(dir);
         boolean changeDetected = false;
         while (true) {
             try {
@@ -37,7 +37,7 @@ public interface FolderWatchService {
         }
         if (changeDetected) {
                 changeListener.run();
-            initialStamp = getFolderModificationId(dir);
+            initialStamp = getProjectModificationId(dir);
             }
         }
     }
@@ -47,17 +47,18 @@ public interface FolderWatchService {
     }
 
     static boolean detectModification(Path dir, long previousStamp) {
-        long currentStamp = getFolderModificationId(dir);
-        currentStamp += getPomModificationStamp();
+        long currentStamp = getProjectModificationId(dir);
         return previousStamp != currentStamp;
     }
 
-    static long getFolderModificationId(Path dir) {
+    static long getProjectModificationId(Path dir) {
         try {
-            return Files.walk(dir).
+            long modificationId = Files.walk(dir).
                     filter(Files::isRegularFile).
                     mapToLong(FolderWatchService::getFileSize).
                     sum();
+            modificationId += getPomModificationStamp();
+            return modificationId;
         } catch (IOException ex) {
             throw new IllegalStateException("Cannot list files", ex);
         }

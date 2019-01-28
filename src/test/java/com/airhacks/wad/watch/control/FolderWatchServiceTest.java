@@ -54,31 +54,31 @@ public class FolderWatchServiceTest {
 
     @Test
     public void stampsAreEqualWithoutModification() throws IOException {
-        long stamp = FolderWatchService.getFolderModificationId(this.testFolderPath);
-        long next = FolderWatchService.getFolderModificationId(this.testFolderPath);
+        long stamp = FolderWatchService.getProjectModificationId(this.testFolderPath);
+        long next = FolderWatchService.getProjectModificationId(this.testFolderPath);
         Assert.assertEquals(stamp, next);
     }
 
     @Test
     public void addingChangesStamp() throws IOException {
-        long stamp = FolderWatchService.getFolderModificationId(this.testFolderPath);
+        long stamp = FolderWatchService.getProjectModificationId(this.testFolderPath);
         addFile();
-        long next = FolderWatchService.getFolderModificationId(this.testFolderPath);
+        long next = FolderWatchService.getProjectModificationId(this.testFolderPath);
         assertThat(stamp, not(next));
     }
 
     @Test
     public void changingFileChangesStamp() throws IOException {
-        long stamp = FolderWatchService.getFolderModificationId(this.testFolderPath);
+        long stamp = FolderWatchService.getProjectModificationId(this.testFolderPath);
         changeFile(1, "Java EE rocks");
-        long next = FolderWatchService.getFolderModificationId(this.testFolderPath);
+        long next = FolderWatchService.getProjectModificationId(this.testFolderPath);
         assertThat(stamp, not(next));
     }
     @Test
     public void deletingFileChangesStamp() throws IOException {
-        long stamp = FolderWatchService.getFolderModificationId(this.testFolderPath);
+        long stamp = FolderWatchService.getProjectModificationId(this.testFolderPath);
         deleteFile(2);
-        long next = FolderWatchService.getFolderModificationId(this.testFolderPath);
+        long next = FolderWatchService.getProjectModificationId(this.testFolderPath);
         assertThat(stamp, not(next));
     }
 }
