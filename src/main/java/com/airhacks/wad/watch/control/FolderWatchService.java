@@ -27,7 +27,6 @@ public interface FolderWatchService {
 
     static void checkForChanges(ScheduledExecutorService scheduler, Path dir, Runnable changeListener) {
         long initialStamp = getFolderModificationId(dir);
-        initialStamp += getPomModificationStamp();
         boolean changeDetected = false;
         while (true) {
             try {
@@ -49,6 +48,7 @@ public interface FolderWatchService {
 
     static boolean detectModification(Path dir, long previousStamp) {
         long currentStamp = getFolderModificationId(dir);
+        currentStamp += getPomModificationStamp();
         return previousStamp != currentStamp;
     }
 
