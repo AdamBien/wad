@@ -46,15 +46,15 @@ WAD also supports simultaneous deployment to multiple servers
 
 A a shell script:
 
-```
+```shell
 #!/bin/bash
 BASEDIR=$(dirname $0)
 java -jar ${BASEDIR}/wad.jar "$@"%
-`
+```
 
 will install WAD "globally". Now you can launch WAD from any directory you like e.g.
 
-`wad.sh /openliberty/wlp/usr/servers/defaultServer/dropins/``
+`wad.sh /openliberty/wlp/usr/servers/defaultServer/dropins/`
 
 
 Any questions left? See you at [airhacks.tv](http://airhacks.tv).
