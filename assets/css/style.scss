@@ -1,4 +1,10 @@
 ---
 ---
 
-@import "{{ site.theme }}";
+body{
+    display: flex;
+    justify-content: center;
+}
+main{
+    width: 80%;
+}
