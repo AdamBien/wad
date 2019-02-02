@@ -42,4 +42,23 @@ WAD also supports simultaneous deployment to multiple servers
 
 `[THIN_WAR]/java -jar wad.jar /openliberty/wlp/usr/servers/defaultServer/dropins/ wildfly/standalone/deployments payara/glassfish/domains/domain1/autodeploy tomee/webapps`
 
+## run from anywhere
+
+A a shell script:
+
+```
+#!/bin/bash
+BASEDIR=$(dirname $0)
+java -jar ${BASEDIR}/wad.jar "$@"%
+`
+
+will install WAD "globally". Now you can launch WAD from any directory you like e.g.
+
+`wad.sh /openliberty/wlp/usr/servers/defaultServer/dropins/``
+
+
+Any questions left? See you at [airhacks.tv](http://airhacks.tv).
+
+
+
 
