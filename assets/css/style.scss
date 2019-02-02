@@ -4,7 +4,33 @@
 body{
     display: flex;
     justify-content: center;
+    font-family: Georgia,Times,fantasy;    
 }
 main{
     width: 80%;
+}
+
+h1 a{
+    font-size: 2em;
+    height: 2.5em;
+    color: #fff;
+    padding: 0px 80px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 2px rgba(0,0,0,.6);
+    background-color: #F07102;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
+
+}
+
+a{
+    text-decoration: none;
+}
+a:active {
+    color: #636363;
+}
+
+a:hover {
+    color: #F07102;
+    opacity: 0.85;
+    text-decoration: underline;
 }
