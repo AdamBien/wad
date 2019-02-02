@@ -1,4 +1,4 @@
-# Watch and Deploy (WAD)
+# watch and deploy (WAD)
 
 WAD watches changes in `src\main\java` folder, builds the project using the `pom.xml` and deploys the ThinWAR into the configured folder.
 
@@ -12,10 +12,6 @@ e.g.
 
 `[THIN_WAR]/java -jar wad.jar /openliberty/wlp/usr/servers/defaultServer/dropins/`
 
-or multiple servers:
-
-`[THIN_WAR]/java -jar wad.jar /openliberty/wlp/usr/servers/defaultServer/dropins/ wildfly/standalone/deployments payara/glassfish/domains/domain1/autodeploy tomee/webapps`
-
 On each source change WAD will:
 
 1. Use the current directory as the service name
@@ -26,7 +22,7 @@ You only have to write code and save it frequently like this:
 
 [![ WAD](https://i.ytimg.com/vi/_c8ZkSSpdWI/mqdefault.jpg)](https://www.youtube.com/embed/_c8ZkSSpdWI?rel=0)
 
-## Common deployment directories
+## common deployment directories
 
 [WildFly](http://wildfly.org)
 wildfly-[VERSION].Final/standalone/deployments
@@ -39,4 +35,11 @@ payara/glassfish/domains/domain1/autodeploy
 
 [TomEE](http://tomee.apache.org)
 tomee-[version]/webapps
+
+## deploy'em all
+
+WAD also supports simultaneous deployment to multiple servers
+
+`[THIN_WAR]/java -jar wad.jar /openliberty/wlp/usr/servers/defaultServer/dropins/ wildfly/standalone/deployments payara/glassfish/domains/domain1/autodeploy tomee/webapps`
+
 
