@@ -5,7 +5,7 @@ body{
     display: flex;
     justify-content: center;
     font-family: Rubik,Georgia,Times,sans-serif;
-    color: #40697c; 
+    color: rgb(26, 26, 26); 
 }
 main{
     width: 80%;
@@ -26,6 +26,7 @@ header h1{
 }
 
 a{
+    color: #40697c;
     text-decoration: none;
 }
 a:active {
