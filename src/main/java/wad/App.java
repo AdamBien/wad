@@ -2,6 +2,7 @@
 package wad;
 
 import com.airhacks.wad.watch.boundary.WADFlow;
+import static com.airhacks.wad.watch.control.PreBuildChecks.pomExists;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,6 +74,7 @@ public class App {
             System.out.println("Invoke with java -jar wad.jar [DEPLOYMENT_DIR1,DEPLOYMENT_DIR1]");
             System.exit(-1);
         }
+        pomExists();
         Path currentPath = Paths.get("").toAbsolutePath();
         Path currentDirectory = currentPath.getFileName();
         String thinWARName = currentDirectory + ".war";
