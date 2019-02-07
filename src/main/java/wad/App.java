@@ -3,10 +3,10 @@ package wad;
 
 import com.airhacks.wad.watch.boundary.WADFlow;
 import static com.airhacks.wad.watch.control.PreBuildChecks.pomExists;
+import static com.airhacks.wad.watch.control.PreBuildChecks.validateDeploymentDirectories;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -20,23 +20,6 @@ import java.util.stream.Collectors;
  */
 public class App {
     
-    static boolean validateDeploymentDirectories(List<Path> path) {
-        long invalidDirectories = path.stream().map(App::validateDeploymentDirectory).filter(valid -> valid == false).count();
-        return (invalidDirectories == 0);
-    }
-
-    static boolean validateDeploymentDirectory(Path path) {
-        if (!Files.exists(path)) {
-            System.err.printf("Directory %s does not exist", path);
-            return false;
-        }
-        if (!Files.isDirectory(path)) {
-            System.err.printf("%s is not a directory", path);
-            return false;
-        }
-        return true;
-    }
-
     static Path addTrailingSlash(String path) {
         if (!path.endsWith(File.separator)) {
             return Paths.get(path, File.separator);
@@ -82,10 +65,7 @@ public class App {
         Path thinWARPath = Paths.get("target", thinWARName);
 
         List<Path> deploymentDirs = convert(args);
-        boolean validationWasSuccessful = validateDeploymentDirectories(deploymentDirs);
-        if (!validationWasSuccessful) {
-            System.exit(-1);
-        }
+        validateDeploymentDirectories(deploymentDirs);
 
         List<Path> deploymentTargets = addWarName(deploymentDirs, thinWARName);
         Path sourceCodeDir = Paths.get("./src/main/");

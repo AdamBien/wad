@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -20,8 +21,13 @@ public interface PreBuildChecks {
         Path pomPath = Paths.get("pom.xml");
         if (!Files.exists(pomPath)) {
             printUsage();
-            System.exit(-1);
+            exit();
         }
+    }
+
+    static void exit() {
+        System.out.println("Sorry, bye");
+        System.exit(-1);
     }
 
     public static void printUsage() {
@@ -41,5 +47,25 @@ public interface PreBuildChecks {
             throw new IllegalStateException("Cannot read from stream", ex);
         }
     }
+
+    static void validateDeploymentDirectories(List<Path> path) {
+        long invalidDirectories = path.stream().map(PreBuildChecks::validateDeploymentDirectory).filter(valid -> valid == false).count();
+        if (invalidDirectories != 0) {
+            exit();
+        }
+    }
+
+    static boolean validateDeploymentDirectory(Path path) {
+        if (!Files.exists(path)) {
+            System.err.printf("Directory %s does not exist", path);
+            return false;
+        }
+        if (!Files.isDirectory(path)) {
+            System.err.printf("%s is not a directory", path);
+            return false;
+        }
+        return true;
+    }
+
 
 }
