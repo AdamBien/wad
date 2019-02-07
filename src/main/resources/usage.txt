@@ -1,5 +1,8 @@
 
-pom.xml does not exist. To create a Java EE 8 ThinWAR project, perform:
+pom.xml does not exist in the current folder. To create a Java EE 8 ThinWAR project, perform:
 
+---
 
 mvn archetype:generate -DarchetypeGroupId=com.airhacks -DarchetypeArtifactId=javaee8-essentials-archetype -DarchetypeVersion=0.0.2 -DgroupId=com.airhacks -Dversion=0.0.1 -Darchetype.interactive=false --batch-mode -DartifactId=[ThinWAR name]
+
+---

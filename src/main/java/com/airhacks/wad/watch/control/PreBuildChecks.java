@@ -32,7 +32,7 @@ public interface PreBuildChecks {
 
     public static void printUsage() {
         String message = loadMessage("usage.txt");
-        System.out.println("message = " + message);
+        System.out.println(message);
     }
 
     public static String loadMessage(String fileName) {
