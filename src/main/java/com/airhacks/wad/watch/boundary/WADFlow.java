@@ -4,6 +4,7 @@ package com.airhacks.wad.watch.boundary;
 import com.airhacks.wad.watch.control.Builder;
 import com.airhacks.wad.watch.control.Copier;
 import com.airhacks.wad.watch.control.FolderWatchService;
+import com.airhacks.wad.watch.control.TerminalColors;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalTime;
@@ -47,7 +48,7 @@ public class WADFlow {
             InvocationResult result = this.builder.build();
             if (result.getExitCode() == 0) {
                 System.out.printf("[%d]", successCounter.incrementAndGet());
-                System.out.printf("[%s%s%s]", "\033[1;90m", currentFormattedTime(), ≈);
+                System.out.printf("[%s%s%s]", TerminalColors.FILE.value(), currentFormattedTime(), TerminalColors.RESET.value());
                 System.out.print("\uD83D\uDC4D");
                 long buildTime = (System.currentTimeMillis() - start);
                 buildTimes.add(buildTime);

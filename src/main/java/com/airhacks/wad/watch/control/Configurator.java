@@ -20,11 +20,11 @@ public interface Configurator {
 
     public static Set<Path> getConfiguredFolders(List<Path> commandLineArguments) {
         Set<Path> deploymentFolders = getConfigurationFromUserDirectory();
-        deploymentFolders.forEach(f -> System.out.printf("%s from ~/.wadrc\n", f));
-        commandLineArguments.forEach(f -> System.out.printf("command line argument %s\n", f));
+        deploymentFolders.forEach(f -> System.out.printf("%s \'%s\' %s from ~/.wadrc\n", TerminalColors.FILE.value(), f, TerminalColors.RESET.value()));
+        commandLineArguments.forEach(f -> System.out.printf("command line argument %s \'%s\' %s\n", TerminalColors.FILE.value(), f, TerminalColors.RESET.value()));
         deploymentFolders.addAll(commandLineArguments);
-        System.out.println("resulting deployment folders");
-        deploymentFolders.forEach(f -> System.out.println(f));
+        System.out.println("resulting deployment folders are:");
+        deploymentFolders.forEach(f -> System.out.printf("%s \'%s\' %s\n", TerminalColors.FILE.value(), f, TerminalColors.RESET.value()));
         return deploymentFolders;
 
     }
