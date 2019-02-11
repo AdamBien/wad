@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -48,7 +48,7 @@ public interface PreBuildChecks {
         }
     }
 
-    static void validateDeploymentDirectories(List<Path> path) {
+    static void validateDeploymentDirectories(Set<Path> path) {
         long invalidDirectories = path.stream().map(PreBuildChecks::validateDeploymentDirectory).filter(valid -> valid == false).count();
         if (invalidDirectories != 0) {
             exit();

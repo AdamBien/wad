@@ -2,6 +2,7 @@
 package wad;
 
 import com.airhacks.wad.watch.boundary.WADFlow;
+import com.airhacks.wad.watch.control.Configurator;
 import static com.airhacks.wad.watch.control.PreBuildChecks.pomExists;
 import static com.airhacks.wad.watch.control.PreBuildChecks.validateDeploymentDirectories;
 import java.io.File;
@@ -12,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,7 +45,7 @@ public class App {
         return Arrays.stream(args).map(App::addTrailingSlash).collect(Collectors.toList());
     }
 
-    static List<Path> addWarName(List<Path> deploymentDirectories, String warName) {
+    static List<Path> addWarName(Set<Path> deploymentDirectories, String warName) {
         return deploymentDirectories.
                 stream().
                 map(path -> path.resolve(warName)).
@@ -53,8 +55,8 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         printWelcomeMessage();
-        if (args.length < 1) {
-            System.out.println("Invoke with java -jar wad.jar [DEPLOYMENT_DIR1,DEPLOYMENT_DIR1]");
+        if (args.length < 1 && !Configurator.userConfigurationExists()) {
+            System.out.println("Invoke with java -jar wad.jar [DEPLOYMENT_DIR1,DEPLOYMENT_DIR1] or create ~/.wadrc");
             System.exit(-1);
         }
         pomExists();
@@ -64,7 +66,7 @@ public class App {
 
         Path thinWARPath = Paths.get("target", thinWARName);
 
-        List<Path> deploymentDirs = convert(args);
+        Set<Path> deploymentDirs = Configurator.getConfiguredFolders(convert(args));
         validateDeploymentDirectories(deploymentDirs);
 
         List<Path> deploymentTargets = addWarName(deploymentDirs, thinWARName);
