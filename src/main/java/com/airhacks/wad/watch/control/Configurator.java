@@ -29,9 +29,7 @@ public interface Configurator {
 
     }
 
-    public static Set<Path> getConfigurationFromUserDirectory() {
-        String userHome = System.getProperty("user.home");
-        Path pathToConfiguration = Paths.get(userHome, WAD_CONFIGURATION_FILE);
+    static Set<Path> getConfigurationFromDirectory(Path pathToConfiguration) {
         if (!Files.exists(pathToConfiguration)) {
             return new HashSet<>();
         }
@@ -44,6 +42,12 @@ public interface Configurator {
         } catch (IOException ex) {
             return new HashSet<>();
         }
+    }
+
+    public static Set<Path> getConfigurationFromUserDirectory() {
+        String userHome = System.getProperty("user.home");
+        Path pathToConfiguration = Paths.get(userHome, WAD_CONFIGURATION_FILE);
+        return getConfigurationFromDirectory(pathToConfiguration);
     }
 
     public static boolean userConfigurationExists() {
