@@ -36,6 +36,7 @@ public interface Configurator {
         try {
             Set<Path> deploymentFolders = Files.readAllLines(pathToConfiguration).
                     stream().
+                    map(d -> d.trim()).
                     map(Paths::get).
                     collect(Collectors.toSet());
             return deploymentFolders;

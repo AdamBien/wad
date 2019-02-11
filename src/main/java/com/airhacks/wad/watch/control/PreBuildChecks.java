@@ -57,7 +57,7 @@ public interface PreBuildChecks {
 
     static boolean validateDeploymentDirectory(Path path) {
         if (!Files.exists(path)) {
-            System.err.printf("Directory %s does not exist", path);
+            System.err.printf("Directory \'%s\' does not exist\n", path);
             return false;
         }
         if (!Files.isDirectory(path)) {
