@@ -47,7 +47,7 @@ public class WADFlow {
             InvocationResult result = this.builder.build();
             if (result.getExitCode() == 0) {
                 System.out.printf("[%d]", successCounter.incrementAndGet());
-                System.out.printf("[%s%s%s]", "\033[1;90m", currentFormattedTime(), "\u001B[0m");
+                System.out.printf("[%s%s%s]", "\033[1;90m", currentFormattedTime(), ≈);
                 System.out.print("\uD83D\uDC4D");
                 long buildTime = (System.currentTimeMillis() - start);
                 buildTimes.add(buildTime);

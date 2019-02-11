@@ -46,7 +46,7 @@ public class Copier {
         try {
             kb = Files.size(from) / 1024;
             warSizes.add(kb);
-            System.out.printf("Copying %dkB ThinWAR to %s \n", kb, shortenForDisplay(to, 40));
+            System.out.printf("Copying %dkB ThinWAR to %s %s %s \n", kb, "\u001B[34m", shortenForDisplay(to, 40), "\u001B[0m");
             return Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
 
         } catch (IOException ex) {
