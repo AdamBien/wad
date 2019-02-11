@@ -6,11 +6,20 @@ WAD watches changes in `src\main\java` folder, builds the project using the `pom
 
 Launch WAD from within your ThinWAR-project created with [javaee8-essentials-archetype](http://www.adam-bien.com/roller/abien/entry/java_ee_8_essentials_archetype).
 
-`[THIN_WAR]/java -jar wad.jar [DEPLOYMENT_DIR]`
+`[THIN_WAR]/java -jar wad.jar [DEPLOYMENT_DIR ANOTHER_DIR]`
 
 e.g.
 
-`[THIN_WAR]/java -jar wad.jar /openliberty/wlp/usr/servers/defaultServer/dropins/`
+`[THIN_WAR]/java -jar wad.jar /openliberty/wlp/usr/servers/defaultServer/dropins/ dist`
+
+wad can be also configured in `~/.wadrc`. Each deployment folder in an new line:
+
+```bash
+/Users/duke/payara/glassfish/domains/domain1/autodeploy 
+/Users/duke/openliberty/usr/servers/defaultServer/dropins
+/Users/duke/tomee/webapps
+/Users/duke/wildfly/standalone/deployments
+```
 
 On each source change WAD will:
 
