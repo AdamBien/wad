@@ -26,7 +26,6 @@ public interface PreBuildChecks {
     }
 
     static void exit() {
-        System.out.println("Sorry, bye");
         System.exit(-1);
     }
 
