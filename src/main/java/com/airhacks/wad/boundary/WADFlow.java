@@ -38,7 +38,7 @@ public class WADFlow {
         this.builder = new Builder();
         this.buildTimes = new ArrayList<>();
         this.copier = new Copier(war, deploymentTargets);
-        Runnable changeListener = () -> buildAndDeploy(war, deploymentTargets);
+        Runnable changeListener = this::buildAndDeploy;
         changeListener.run();
         registerEnterListener(changeListener);
         FolderWatchService.listenForChanges(dir, changeListener);
@@ -58,7 +58,12 @@ public class WADFlow {
         new Thread(task).start();
     }
 
-    void buildAndDeploy(Path war, List<Path> deploymentTargets) {
+    void buildAndDeploy() {
+        this.build();
+        this.deploy();
+    }
+
+    void build() {
         long start = System.currentTimeMillis();
         try {
             System.out.printf("[%s%s%s]", TerminalColors.TIME.value(), currentFormattedTime(), TerminalColors.RESET.value());
@@ -69,10 +74,6 @@ public class WADFlow {
                 long buildTime = (System.currentTimeMillis() - start);
                 buildTimes.add(buildTime);
                 System.out.println(" built in " + buildTime + " ms");
-                start = System.currentTimeMillis();
-                this.copier.copy();
-                System.out.print("\uD83D\uDE80 ");
-                System.out.println(" copied in " + (System.currentTimeMillis() - start) + " ms");
                 if (buildTimes.size() % 10 == 0) {
                     this.printStatistics();
                 }
@@ -83,6 +84,14 @@ public class WADFlow {
         } catch (MavenInvocationException ex) {
             System.err.println(ex.getClass().getName() + " " + ex.getMessage());
         }
+    }
+
+    void deploy() {
+        long start = System.currentTimeMillis();
+        this.copier.copy();
+        System.out.print("\uD83D\uDE80 ");
+        System.out.println(" copied in " + (System.currentTimeMillis() - start) + " ms");
+
     }
 
     static String currentFormattedTime() {

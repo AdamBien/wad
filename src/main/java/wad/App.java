@@ -1,10 +1,10 @@
 
 package wad;
 
-import com.airhacks.wad.watch.boundary.WADFlow;
-import com.airhacks.wad.watch.control.Configurator;
-import static com.airhacks.wad.watch.control.PreBuildChecks.pomExists;
-import static com.airhacks.wad.watch.control.PreBuildChecks.validateDeploymentDirectories;
+import com.airhacks.wad.boundary.WADFlow;
+import com.airhacks.wad.control.Configurator;
+import static com.airhacks.wad.control.PreBuildChecks.pomExists;
+import static com.airhacks.wad.control.PreBuildChecks.validateDeploymentDirectories;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
