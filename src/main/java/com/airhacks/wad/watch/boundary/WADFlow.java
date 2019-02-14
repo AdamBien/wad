@@ -58,10 +58,10 @@ public class WADFlow {
     void buildAndDeploy(Path war, List<Path> deploymentTargets) {
         long start = System.currentTimeMillis();
         try {
+            System.out.printf("[%s%s%s]", TerminalColors.TIME.value(), currentFormattedTime(), TerminalColors.RESET.value());
             InvocationResult result = this.builder.build();
             if (result.getExitCode() == 0) {
                 System.out.printf("[%d]", successCounter.incrementAndGet());
-                System.out.printf("[%s%s%s]", TerminalColors.TIME.value(), currentFormattedTime(), TerminalColors.RESET.value());
                 System.out.print("\uD83D\uDC4D");
                 long buildTime = (System.currentTimeMillis() - start);
                 buildTimes.add(buildTime);
