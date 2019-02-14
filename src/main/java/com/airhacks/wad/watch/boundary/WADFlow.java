@@ -46,13 +46,16 @@ public class WADFlow {
 
     void registerEnterListener(Runnable listener) {
         InputStream in = System.in;
-        int c;
+        Runnable task = () -> {
+            int c;
         try {
             while ((c = in.read()) != -1) {
                 listener.run();
             }
-        } catch (IOException ex) {
-        }
+            } catch (IOException ex) {
+            }
+        };
+        new Thread(task).start();
     }
 
     void buildAndDeploy(Path war, List<Path> deploymentTargets) {
