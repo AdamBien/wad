@@ -1,7 +1,8 @@
 /*
  */
-package com.airhacks.wad.watch.control;
+package com.airhacks.wad.control;
 
+import com.airhacks.wad.control.PreBuildChecks;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import static org.junit.Assert.assertFalse;

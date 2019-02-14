@@ -1,5 +1,5 @@
 
-package com.airhacks.wad.watch.control;
+package com.airhacks.wad.control;
 
 import org.apache.maven.shared.invoker.InvokerLogger;
 

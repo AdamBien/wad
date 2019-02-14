@@ -1,10 +1,10 @@
 
-package com.airhacks.wad.watch.boundary;
+package com.airhacks.wad.boundary;
 
-import com.airhacks.wad.watch.control.Builder;
-import com.airhacks.wad.watch.control.Copier;
-import com.airhacks.wad.watch.control.FolderWatchService;
-import com.airhacks.wad.watch.control.TerminalColors;
+import com.airhacks.wad.control.Builder;
+import com.airhacks.wad.control.Copier;
+import com.airhacks.wad.control.FolderWatchService;
+import com.airhacks.wad.control.TerminalColors;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;

@@ -1,6 +1,6 @@
 /*
  */
-package com.airhacks.wad.watch.control;
+package com.airhacks.wad.control;
 
 /**
  *

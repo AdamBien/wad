@@ -1,5 +1,5 @@
 
-package com.airhacks.wad.watch.control;
+package com.airhacks.wad.control;
 
 import java.io.IOException;
 import java.nio.file.Files;
