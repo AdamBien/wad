@@ -1,6 +1,5 @@
 package com.airhacks.wad.control;
 
-import com.airhacks.wad.control.FolderWatchService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

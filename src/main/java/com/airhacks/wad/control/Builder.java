@@ -1,6 +1,7 @@
 
 package com.airhacks.wad.control;
 
+import com.airhacks.wad.control.SilentLogger;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
