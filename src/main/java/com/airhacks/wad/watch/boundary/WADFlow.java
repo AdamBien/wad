@@ -6,6 +6,7 @@ import com.airhacks.wad.watch.control.Copier;
 import com.airhacks.wad.watch.control.FolderWatchService;
 import com.airhacks.wad.watch.control.TerminalColors;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -39,7 +40,19 @@ public class WADFlow {
         this.copier = new Copier(war, deploymentTargets);
         Runnable changeListener = () -> buildAndDeploy(war, deploymentTargets);
         changeListener.run();
+        registerEnterListener(changeListener);
         FolderWatchService.listenForChanges(dir, changeListener);
+    }
+
+    void registerEnterListener(Runnable listener) {
+        InputStream in = System.in;
+        int c;
+        try {
+            while ((c = in.read()) != -1) {
+                listener.run();
+            }
+        } catch (IOException ex) {
+        }
     }
 
     void buildAndDeploy(Path war, List<Path> deploymentTargets) {
