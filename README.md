@@ -2,6 +2,10 @@
 
 WAD watches changes in `src\main\java` folder, builds the project using the `pom.xml` and deploys the ThinWAR into the configured folder.
 
+## installation
+
+Download the executable and self-contained [wad.jar](https://github.com/AdamBien/wad/releases/latest)
+
 ## usage
 
 Launch WAD from within your ThinWAR-project created with [javaee8-essentials-archetype](http://www.adam-bien.com/roller/abien/entry/java_ee_8_essentials_archetype).
