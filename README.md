@@ -2,6 +2,10 @@
 
 WAD watches changes in `src\main\java` folder, builds the project using the `pom.xml` and deploys the ThinWAR into the configured folder.
 
+## installation
+
+Download the executable and self-contained [wad.jar](https://github.com/AdamBien/wad/releases/latest)
+
 ## usage
 
 Launch WAD from within your ThinWAR-project created with [javaee8-essentials-archetype](http://www.adam-bien.com/roller/abien/entry/java_ee_8_essentials_archetype).
@@ -65,6 +69,9 @@ will install WAD "globally". Now you can launch WAD from any directory you like 
 
 `wad.sh /openliberty/wlp/usr/servers/defaultServer/dropins/`
 
+## articles
+
+["Improved Java / Jakarta EE Productivity with wad.sh"](https://rieckpil.de/review-improved-java-jakarta-ee-productivity-with-adam-biens-wad-watch-and-deploy/) by [@rieckpil](https://twitter.com/rieckpil)
 
 Any questions left? See you at [airhacks.tv](http://airhacks.tv).
 
