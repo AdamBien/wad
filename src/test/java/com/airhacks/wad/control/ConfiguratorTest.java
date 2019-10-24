@@ -42,12 +42,10 @@ public class ConfiguratorTest {
     }
 
     @Test
-    public void name() {
+    public void extractExistingKey() {
         String expected = "DUKE";
-        String stringWithPlaceholder = "hello ${"+expected+"}";
-        int firstIndex = stringWithPlaceholder.indexOf("${")+2;
-        int lastIndex = stringWithPlaceholder.indexOf("}");
-        String actual = stringWithPlaceholder.substring(firstIndex, lastIndex);
+        String stringWithPlaceholder = "hello ${" + expected + "}";
+        String actual = Configurator.extractKey(stringWithPlaceholder);
         assertThat(actual,is(expected));
     }
 

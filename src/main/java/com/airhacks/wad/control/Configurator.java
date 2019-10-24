@@ -55,5 +55,14 @@ public interface Configurator {
         return !getConfigurationFromUserDirectory().isEmpty();
     }
 
+    public static String extractKey(String stringWithPlaceholder) {
+        int firstIndex = stringWithPlaceholder.indexOf("${");
+        if (firstIndex == -1) {
+            return null;
+        }
+        int beginning = firstIndex+2;
+        int lastIndex = stringWithPlaceholder.indexOf("}");
+        return stringWithPlaceholder.substring(beginning, lastIndex);
+    }
 
 }
