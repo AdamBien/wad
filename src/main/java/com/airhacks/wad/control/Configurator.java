@@ -30,9 +30,6 @@ public interface Configurator {
     }
 
     static Set<Path> getConfigurationFromDirectory(Path pathToConfiguration) {
-        if (!Files.exists(pathToConfiguration)) {
-            return new HashSet<>();
-        }
         try {
             Set<Path> deploymentFolders = Files.readAllLines(pathToConfiguration).
                     stream().
@@ -47,13 +44,21 @@ public interface Configurator {
     }
 
     public static Set<Path> getConfigurationFromUserDirectory() {
-        String userHome = System.getProperty("user.home");
-        Path pathToConfiguration = Paths.get(userHome, WAD_CONFIGURATION_FILE);
-        return getConfigurationFromDirectory(pathToConfiguration);
+        return getConfigurationFromDirectory(getUserHomeValue());
     }
 
-    public static boolean userConfigurationExists() {
-        return !getConfigurationFromUserDirectory().isEmpty();
+    static boolean userConfigurationExists() {
+        return userConfigurationExists(getUserHomeValue());
+    }
+
+    static Path getUserHomeValue() {
+        String userHome = System.getProperty("user.home");
+        return Paths.get(userHome, WAD_CONFIGURATION_FILE);
+
+    }
+
+    static boolean userConfigurationExists(Path pathToConfiguration) {
+        return Files.exists(pathToConfiguration);
     }
 
 
