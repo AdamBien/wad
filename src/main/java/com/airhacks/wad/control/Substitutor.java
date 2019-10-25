@@ -9,9 +9,19 @@ import java.util.Optional;
  */
 public class Substitutor {
 
-    static String substitute(String placeHolder) {
+    public static String substitute(String placeHolder) {
         Optional<String> key = extractKey(placeHolder);
-        return key.map(Substitutor::resolveWithEnvironment).orElse(placeHolder);
+        Optional<String> variableValue = key.map(Substitutor::resolveWithEnvironment);
+        return variableValue.map(v -> substituteVariableWithValue(placeHolder, v)).orElse(placeHolder);
+    }
+
+    static String substituteVariableWithValue(String withPlaceHolder, String value) {
+        int firstIndex = withPlaceHolder.indexOf("${");
+        int lastIndex = withPlaceHolder.indexOf("}");
+        String beginning = withPlaceHolder.substring(0, firstIndex);
+        String end = withPlaceHolder.substring(lastIndex + 1);
+        return beginning + value + end;
+
     }
 
     static Optional<String> extractKey(String stringWithPlaceholder) {
