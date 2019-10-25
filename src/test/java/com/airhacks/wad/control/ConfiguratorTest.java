@@ -2,17 +2,12 @@
  */
 package com.airhacks.wad.control;
 
-import com.airhacks.wad.control.Configurator;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.is;
-
 import org.junit.Test;
 
 /**
@@ -39,14 +34,6 @@ public class ConfiguratorTest {
         Path wadrc = Paths.get("src/test/resources", "doesNotExist");
         Set<Path> lines = Configurator.getConfigurationFromDirectory(wadrc);
         assertTrue(lines.isEmpty());
-    }
-
-    @Test
-    public void extractExistingKey() {
-        String expected = "DUKE";
-        String stringWithPlaceholder = "hello ${" + expected + "}";
-        String actual = Configurator.extractKey(stringWithPlaceholder);
-        assertThat(actual,is(expected));
     }
 
 }
