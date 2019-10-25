@@ -48,7 +48,10 @@ public interface PreBuildChecks {
     }
 
     static void validateDeploymentDirectories(Set<Path> path) {
-        long invalidDirectories = path.stream().map(PreBuildChecks::validateDeploymentDirectory).filter(valid -> valid == false).count();
+        long invalidDirectories = path.stream().
+                map(PreBuildChecks::validateDeploymentDirectory).
+                filter(valid -> valid == false).
+                count();
         if (invalidDirectories != 0) {
             exit();
         }

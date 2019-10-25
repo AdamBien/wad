@@ -31,7 +31,9 @@ public interface FolderWatchService {
         while (true) {
             try {
                 final long previous = initialStamp;
-                changeDetected = scheduler.schedule(() -> detectModification(dir, previous), POLLING_INTERVALL, TimeUnit.MILLISECONDS).get();
+                changeDetected = scheduler.
+                        schedule(() -> detectModification(dir, previous), POLLING_INTERVALL, TimeUnit.MILLISECONDS).
+                        get();
         } catch (InterruptedException | ExecutionException ex) {
             throw new IllegalStateException("Scheduler error", ex);
         }
