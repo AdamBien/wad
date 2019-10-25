@@ -35,7 +35,11 @@ public class Substitutor {
     }
 
     static String resolveWithEnvironment(String key) {
-        return System.getenv(key);
+        String value = System.getenv(key);
+        if (value == null) {
+            System.out.printf("Environment entry %s is not defined\n", key);
+        }
+        return value;
     }
 
 
