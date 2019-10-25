@@ -26,14 +26,24 @@ public class SubstitutorTest {
 
     @Test
     public void substituteExistingVariable() {
-        String javaHome = System.getenv("JAVA_HOME");
+        String envEntry = "JAVA_HOME";
+        String javaHome = System.getenv(envEntry);
         Assume.assumeNotNull(javaHome);
         String prefix = "java=";
-        String pathWithPlaceholder = prefix + "${JAVA_HOME}";
+        String pathWithPlaceholder = prefix + "${" + envEntry + "}";
         String expected = prefix + javaHome;
 
         String actual = Substitutor.substitute(pathWithPlaceholder);
         assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void substituteNotExistingVariable() {
+        String envEntry = "SHOULD_NOT_EXIST";
+        String prefix = "java=";
+        String pathWithPlaceholder = prefix + "${" + envEntry + "}";
+        String actual = Substitutor.substitute(pathWithPlaceholder);
+        assertThat(actual, is(pathWithPlaceholder));
     }
 
 
