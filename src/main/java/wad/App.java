@@ -3,8 +3,8 @@ package wad;
 
 import com.airhacks.wad.boundary.WADFlow;
 import com.airhacks.wad.control.Configurator;
-import static com.airhacks.wad.control.PreBuildChecks.pomExists;
-import static com.airhacks.wad.control.PreBuildChecks.validateDeploymentDirectories;
+import com.airhacks.wad.control.ThinWarNameProvider;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.airhacks.wad.control.PreBuildChecks.pomExists;
+import static com.airhacks.wad.control.PreBuildChecks.validateDeploymentDirectories;
 
 /**
  *
@@ -61,8 +64,9 @@ public class App {
         }
         pomExists();
         Path currentPath = Paths.get("").toAbsolutePath();
-        Path currentDirectory = currentPath.getFileName();
-        String thinWARName = currentDirectory + ".war";
+        Path pomXml = currentPath.resolve("pom.xml");
+
+        String thinWARName = ThinWarNameProvider.getCurrentThinWarName(pomXml);
 
         Path thinWARPath = Paths.get("target", thinWARName);
 
