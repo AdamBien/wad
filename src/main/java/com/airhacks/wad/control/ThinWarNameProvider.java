@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 
 public interface ThinWarNameProvider {
 
-    static String getCurrentThinWarName(Path pom) throws IOException {
+    public static String getCurrentThinWarName(Path pom) throws IOException {
         String thinWARName = getNameByDefaultConvention();
 
         String finalName = getNameByFinalName(pom);
