@@ -55,8 +55,8 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         printWelcomeMessage();
-        if (args.length < 1 && !Configurator.userConfigurationExists()) {
-            System.out.println("Invoke with java -jar wad.jar [DEPLOYMENT_DIR1,DEPLOYMENT_DIR1] or create ~/.wadrc");
+        if (args.length < 1 && !Configurator.userConfigurationExists() && !Configurator.localConfigurationExists()) {
+            System.out.println("Invoke with java -jar wad.jar [DEPLOYMENT_DIR1,DEPLOYMENT_DIR1], create .wadrc in project location or create ~/.wadrc");
             System.exit(-1);
         }
         pomExists();

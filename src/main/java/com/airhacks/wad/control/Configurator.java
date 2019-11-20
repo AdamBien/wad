@@ -21,6 +21,11 @@ public interface Configurator {
     public static Set<Path> getConfiguredFolders(List<Path> commandLineArguments) {
         Set<Path> deploymentFolders = getConfigurationFromUserDirectory();
         deploymentFolders.forEach(f -> System.out.printf("%s \'%s\' %s from ~/.wadrc\n", TerminalColors.FILE.value(), f, TerminalColors.RESET.value()));
+        
+        Set<Path> projectDeploymentFolders = getConfigurationFromProjectDirectory();
+        projectDeploymentFolders.forEach(f -> System.out.printf("%s \'%s\' %s from %s\n", TerminalColors.FILE.value(), f, TerminalColors.RESET.value(), getLocalValue()));
+        deploymentFolders.addAll(projectDeploymentFolders);
+
         commandLineArguments.forEach(f -> System.out.printf("command line argument %s \'%s\' %s\n", TerminalColors.FILE.value(), f, TerminalColors.RESET.value()));
         deploymentFolders.addAll(commandLineArguments);
         System.out.println("resulting deployment folders are:");
@@ -47,14 +52,26 @@ public interface Configurator {
         return getConfigurationFromDirectory(getUserHomeValue());
     }
 
+    public static Set<Path> getConfigurationFromProjectDirectory() {
+        return getConfigurationFromDirectory(getLocalValue());
+    }
+
     static boolean userConfigurationExists() {
         return userConfigurationExists(getUserHomeValue());
+    }
+
+    static boolean localConfigurationExists() {
+        return userConfigurationExists(getLocalValue());
     }
 
     static Path getUserHomeValue() {
         String userHome = System.getProperty("user.home");
         return Paths.get(userHome, WAD_CONFIGURATION_FILE);
 
+    }
+
+    static Path getLocalValue() {
+        return Paths.get("", WAD_CONFIGURATION_FILE);
     }
 
     static boolean userConfigurationExists(Path pathToConfiguration) {
