@@ -17,57 +17,61 @@ import java.util.stream.Collectors;
  */
 public interface PreBuildChecks {
 
-    static void pomExists() {
-        Path pomPath = Paths.get("pom.xml");
-        if (!Files.exists(pomPath)) {
-            printUsage();
-            exit();
-        }
+    static Builder getBuilder() {
+	if (fileExists("pom.xml"))
+	    return new MavenBuilder();
+	if (fileExists("build.gradle"))
+	    return new GradleBuilder();
+	printUsage();
+	exit();
+	return null;
+    }
+
+    static boolean fileExists(String buildFile) {
+	Path buildfilePath = Paths.get(buildFile);
+	return Files.exists(buildfilePath);
     }
 
     static void exit() {
-        System.exit(-1);
+	System.exit(-1);
     }
 
     public static void printUsage() {
-        String message = loadMessage("usage.txt");
-        System.out.println(message);
+	String message = loadMessage("usage.txt");
+	System.out.println(message);
     }
 
     public static String loadMessage(String fileName) {
-        InputStream stream = PreBuildChecks.class.getResourceAsStream("/" + fileName);
-        return load(stream);
+	InputStream stream = PreBuildChecks.class.getResourceAsStream("/" + fileName);
+	return load(stream);
     }
 
     static String load(InputStream stream) {
-        try ( BufferedReader buffer = new BufferedReader(new InputStreamReader(stream))) {
-            return buffer.lines().collect(Collectors.joining("\n"));
-        } catch (IOException ex) {
-            throw new IllegalStateException("Cannot read from stream", ex);
-        }
+	try (BufferedReader buffer = new BufferedReader(new InputStreamReader(stream))) {
+	    return buffer.lines().collect(Collectors.joining("\n"));
+	} catch (IOException ex) {
+	    throw new IllegalStateException("Cannot read from stream", ex);
+	}
     }
 
     static void validateDeploymentDirectories(Set<Path> path) {
-        long invalidDirectories = path.stream().
-                map(PreBuildChecks::validateDeploymentDirectory).
-                filter(valid -> valid == false).
-                count();
-        if (invalidDirectories != 0) {
-            exit();
-        }
+	long invalidDirectories = path.stream().map(PreBuildChecks::validateDeploymentDirectory)
+		.filter(valid -> valid == false).count();
+	if (invalidDirectories != 0) {
+	    exit();
+	}
     }
 
     static boolean validateDeploymentDirectory(Path path) {
-        if (!Files.exists(path)) {
-            System.err.printf("Directory \'%s\' does not exist\n", path);
-            return false;
-        }
-        if (!Files.isDirectory(path)) {
-            System.err.printf("%s is not a directory", path);
-            return false;
-        }
-        return true;
+	if (!Files.exists(path)) {
+	    System.err.printf("Directory \'%s\' does not exist\n", path);
+	    return false;
+	}
+	if (!Files.isDirectory(path)) {
+	    System.err.printf("%s is not a directory", path);
+	    return false;
+	}
+	return true;
     }
-
 
 }
