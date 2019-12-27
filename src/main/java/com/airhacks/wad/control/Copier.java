@@ -15,47 +15,44 @@ import java.util.LongSummaryStatistics;
  */
 public class Copier {
 
-    private List<Long> warSizes;
+    private final List<Long> warSizes;
     private final List<Path> deploymentTargets;
     private final Path from;
 
     public Copier(Path from, List<Path> deploymentTargets) {
-        this.warSizes = new ArrayList<>();
-        this.from = from;
-        this.deploymentTargets = deploymentTargets;
+	this.warSizes = new ArrayList<>();
+	this.from = from;
+	this.deploymentTargets = deploymentTargets;
     }
 
-
-
     String shortenForDisplay(Path path, int maxLength) {
-        String message = path.toString();
-        int length = message.length();
-        if (length > maxLength) {
-            return "(...)" + message.substring(length - maxLength);
-        } else {
-            return message;
-        }
+	String message = path.toString();
+	int length = message.length();
+	if (length > maxLength)
+	    return "(...)" + message.substring(length - maxLength);
+	return message;
     }
 
     public void copy() {
-        deploymentTargets.forEach(target -> copySingle(this.from, target));
+	deploymentTargets.forEach(target -> copySingle(this.from, target));
     }
 
     Path copySingle(Path from, Path to) {
-        long kb;
-        try {
-            kb = Files.size(from) / 1024;
-            warSizes.add(kb);
-            System.out.printf("Copying %dkB ThinWAR to %s %s %s \n", kb, TerminalColors.FILE.value(), shortenForDisplay(to, 40), TerminalColors.RESET.value());
-            return Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
+	long kb;
+	try {
+	    kb = Files.size(from) / 1024;
+	    warSizes.add(kb);
+	    System.out.printf("Copying %dkB ThinWAR to %s %s %s \n", kb, TerminalColors.FILE.value(),
+		    shortenForDisplay(to, 40), TerminalColors.RESET.value());
+	    return Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
 
-        } catch (IOException ex) {
-            throw new IllegalStateException(ex.getMessage(), ex);
-        }
+	} catch (IOException ex) {
+	    throw new IllegalStateException(ex.getMessage(), ex);
+	}
     }
 
     public LongSummaryStatistics warSizeStatistics() {
-        return this.warSizes.stream().mapToLong(s -> s).summaryStatistics();
+	return this.warSizes.stream().mapToLong(s -> s).summaryStatistics();
     }
 
 }

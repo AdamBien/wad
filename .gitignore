@@ -1,2 +1,7 @@
 nbactions.xml
 release.sh
+/target/
+/bin/
+.classpath
+.project
+.settings/
