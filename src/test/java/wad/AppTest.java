@@ -1,9 +1,11 @@
 package wad;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.junit.Test;
 
 /**
@@ -21,14 +23,13 @@ public class AppTest {
 
     @Test
     public void addTrailingSlash() {
-        String expected = "/";
+        String expected = File.separator;
 
         String actual = App.addTrailingSlash("").toString();
         assertThat(actual, is(expected));
 
-        actual = App.addTrailingSlash("/").toString();
+        actual = App.addTrailingSlash(File.separator).toString();
         assertThat(actual, is(expected));
     }
-
 
 }

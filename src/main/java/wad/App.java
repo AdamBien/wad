@@ -1,10 +1,11 @@
 
 package wad;
 
-import com.airhacks.wad.boundary.WADFlow;
-import com.airhacks.wad.control.Configurator;
 import static com.airhacks.wad.control.PreBuildChecks.pomExists;
 import static com.airhacks.wad.control.PreBuildChecks.validateDeploymentDirectories;
+
+import com.airhacks.wad.boundary.WADFlow;
+import com.airhacks.wad.control.Configurator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,12 +46,6 @@ public class App {
         return Arrays.stream(args).map(App::addTrailingSlash).collect(Collectors.toList());
     }
 
-    static List<Path> addWarName(Set<Path> deploymentDirectories, String warName) {
-        return deploymentDirectories.
-                stream().
-                map(path -> path.resolve(warName)).
-                collect(Collectors.toList());
-    }
 
 
     public static void main(String[] args) throws IOException {
@@ -60,19 +55,15 @@ public class App {
             System.exit(-1);
         }
         pomExists();
-        Path currentPath = Paths.get("").toAbsolutePath();
-        Path currentDirectory = currentPath.getFileName();
-        String thinWARName = currentDirectory + ".war";
 
-        Path thinWARPath = Paths.get("target", thinWARName);
+        Path thinWARPath = Paths.get("target");
 
         Set<Path> deploymentDirs = Configurator.getConfiguredFolders(convert(args));
         validateDeploymentDirectories(deploymentDirs);
 
-        List<Path> deploymentTargets = addWarName(deploymentDirs, thinWARName);
         Path sourceCodeDir = Paths.get("./src/main/");
-        System.out.printf("WAD is watching %s, deploying %s to %s \n", sourceCodeDir, thinWARPath, deploymentTargets);
-        WADFlow wadFlow = new WADFlow(sourceCodeDir, thinWARPath, deploymentTargets);
+        System.out.printf("WAD is watching %s, deploying from dir '%s' to %s \n", sourceCodeDir, thinWARPath, deploymentDirs);
+        WADFlow wadFlow = new WADFlow(sourceCodeDir, thinWARPath, deploymentDirs);
     }
 
 }
