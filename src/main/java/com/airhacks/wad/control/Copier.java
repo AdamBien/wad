@@ -6,8 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.LongSummaryStatistics;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -16,16 +20,14 @@ import java.util.LongSummaryStatistics;
 public class Copier {
 
     private List<Long> warSizes;
-    private final List<Path> deploymentTargets;
-    private final Path from;
+    private final Collection<Path> deploymentTargetDirectories;
+    private final Path fromDirectory;
 
-    public Copier(Path from, List<Path> deploymentTargets) {
+    public Copier(Path from, Collection<Path> deploymentTargetDirectories) {
         this.warSizes = new ArrayList<>();
-        this.from = from;
-        this.deploymentTargets = deploymentTargets;
+        this.fromDirectory = from;
+        this.deploymentTargetDirectories = deploymentTargetDirectories;
     }
-
-
 
     String shortenForDisplay(Path path, int maxLength) {
         String message = path.toString();
@@ -38,7 +40,28 @@ public class Copier {
     }
 
     public void copy() {
-        deploymentTargets.forEach(target -> copySingle(this.from, target));
+        Path warPath = findWarInPath(this.fromDirectory).orElseThrow(() -> new IllegalStateException("war file was not found in the path"));
+        List<Path> copyTargets = addWarName(deploymentTargetDirectories, warPath.getFileName().toString());
+        copyTargets.forEach(target -> copySingle(warPath, target));
+    }
+
+    Optional<Path> findWarInPath(Path fromDirectory) {
+        try (Stream<Path> stream = Files.walk(fromDirectory, 1)) {
+            return stream
+                .filter(file -> !Files.isDirectory(file) && file.getFileName().toString().endsWith(".war"))
+                .findFirst();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    List<Path> addWarName(Collection<Path> deploymentDirectories, String warName) {
+        return deploymentDirectories.
+            stream().
+            map(path -> path.resolve(warName)).
+            collect(Collectors.toList());
     }
 
     Path copySingle(Path from, Path to) {
@@ -46,7 +69,7 @@ public class Copier {
         try {
             kb = Files.size(from) / 1024;
             warSizes.add(kb);
-            System.out.printf("Copying %dkB ThinWAR to %s %s %s \n", kb, TerminalColors.FILE.value(), shortenForDisplay(to, 40), TerminalColors.RESET.value());
+            System.out.printf("Copying %dkB ThinWAR %s to %s %s %s \n", kb,  from.toString(), TerminalColors.FILE.value(), shortenForDisplay(to, 40), TerminalColors.RESET.value());
             return Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
 
         } catch (IOException ex) {

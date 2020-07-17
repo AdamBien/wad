@@ -15,6 +15,7 @@ import static java.time.temporal.ChronoField.HOUR_OF_DAY;
 import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
 import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,7 +27,7 @@ import org.apache.maven.shared.invoker.MavenInvocationException;
  * @author airhacks.com
  */
 public class WADFlow {
-    private final List<Long> buildTimes;
+    private final Collection<Long> buildTimes;
 
     private final AtomicLong successCounter = new AtomicLong();
     private final AtomicLong buildErrorCounter = new AtomicLong();
@@ -34,7 +35,7 @@ public class WADFlow {
     private final Copier copier;
     private final Builder builder;
 
-    public WADFlow(Path dir, Path war, List<Path> deploymentTargets) throws IOException {
+    public WADFlow(Path dir, Path war, Collection<Path> deploymentTargets) throws IOException {
         this.builder = new Builder();
         this.buildTimes = new ArrayList<>();
         this.copier = new Copier(war, deploymentTargets);
