@@ -1,22 +1,23 @@
 package com.airhacks.wad.control;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import org.junit.Assert;
 import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
 public class FolderWatchServiceTest {
 
+    private final boolean EXECUTED = true;
     private Path testFolderPath;
     private List<Path> tempFiles;
+    private Watcher watcher;
+    private boolean listener;
 
     @Before
     public void init() throws IOException {
@@ -25,6 +26,8 @@ public class FolderWatchServiceTest {
         this.tempFiles = Stream.generate(this::createFile).
                 limit(15).
                 collect(Collectors.toList());
+        this.watcher = new Watcher(testFolderPath, () -> listener = EXECUTED);
+        listener=false;
     }
 
     Path createFile() {
@@ -53,32 +56,55 @@ public class FolderWatchServiceTest {
     }
 
     @Test
-    public void stampsAreEqualWithoutModification() throws IOException {
-        long stamp = FolderWatchService.getProjectModificationId(this.testFolderPath);
-        long next = FolderWatchService.getProjectModificationId(this.testFolderPath);
-        Assert.assertEquals(stamp, next);
+    public void listenerIsNotTriggeredWithoutModification() throws Exception {
+        new Thread(()-> watcher.runBlocking()).start();
+        Thread.sleep(100);
+        Thread.sleep(100);
+        assertThat(listener, not(EXECUTED));
     }
 
     @Test
-    public void addingChangesStamp() throws IOException {
-        long stamp = FolderWatchService.getProjectModificationId(this.testFolderPath);
+    public void addingFileTriggersListener() throws Exception {
+        new Thread(()-> watcher.runBlocking()).start();
+        Thread.sleep(100);
         addFile();
-        long next = FolderWatchService.getProjectModificationId(this.testFolderPath);
-        assertThat(stamp, not(next));
+        Thread.sleep(100);
+        assertThat(listener, is(EXECUTED));
     }
 
     @Test
-    public void changingFileChangesStamp() throws IOException {
-        long stamp = FolderWatchService.getProjectModificationId(this.testFolderPath);
+    public void changingFileTriggersListener() throws Exception {
+        new Thread(()-> watcher.runBlocking()).start();
+        Thread.sleep(100);
         changeFile(1, "Java EE rocks");
-        long next = FolderWatchService.getProjectModificationId(this.testFolderPath);
-        assertThat(stamp, not(next));
+        Thread.sleep(100);
+        assertThat(listener, is(EXECUTED));
     }
+
     @Test
-    public void deletingFileChangesStamp() throws IOException {
-        long stamp = FolderWatchService.getProjectModificationId(this.testFolderPath);
+    public void deletingFileTriggersListener() throws Exception {
+        new Thread(()-> watcher.runBlocking()).start();
+        Thread.sleep(100);
         deleteFile(2);
-        long next = FolderWatchService.getProjectModificationId(this.testFolderPath);
-        assertThat(stamp, not(next));
+        Thread.sleep(100);
+        assertThat(listener, is(EXECUTED));
+    }
+
+    //see Watcher.MIN_RUN_DELAY
+    @Test
+    public void changingMultipleFilesTriggersOnce() throws Exception {
+        new Thread(()-> watcher.runBlocking()).start();
+
+        listener = false;
+        Thread.sleep(100);
+        addFile();
+        Thread.sleep(100);
+        assertThat(listener, is(EXECUTED));
+
+        listener = false;
+        Thread.sleep(100);
+        addFile();
+        Thread.sleep(100);
+        assertThat(listener, not(EXECUTED));
     }
 }
