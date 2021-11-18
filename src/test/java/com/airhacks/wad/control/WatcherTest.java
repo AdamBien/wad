@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-public class FolderWatchServiceTest {
+public class WatcherTest {
 
     private final boolean EXECUTED = true;
     private Path testFolderPath;
