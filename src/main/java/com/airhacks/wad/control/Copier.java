@@ -1,6 +1,7 @@
 
 package com.airhacks.wad.control;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,7 +55,7 @@ public class Copier {
             e.printStackTrace();
         }
 
-        return null;
+        return Optional.empty();
     }
 
     List<Path> addWarName(Collection<Path> deploymentDirectories, String warName) {
@@ -64,16 +65,21 @@ public class Copier {
             collect(Collectors.toList());
     }
 
-    Path copySingle(Path from, Path to) {
+    void copySingle(Path from, Path to) {
         long kb;
         try {
             kb = Files.size(from) / 1024;
             warSizes.add(kb);
             System.out.printf("Copying %dkB ThinWAR %s to %s %s %s \n", kb,  from.toString(), TerminalColors.FILE.value(), shortenForDisplay(to, 40), TerminalColors.RESET.value());
-            return Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
-
+            Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
-            throw new IllegalStateException(ex.getMessage(), ex);
+            File targetFile = to.toFile();
+            boolean targetFileIsLocked = !targetFile.renameTo(targetFile);
+            if(targetFileIsLocked) {
+                System.err.println("Cannot copy because server has locked file \""+to+"\"");
+            }else{
+                throw new IllegalStateException(ex.getMessage(), ex);
+            }
         }
     }
 
